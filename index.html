@@ -2,734 +2,292 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8" />
-  <title>韩语对话练习 - 留学生场景模拟</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
+  <title>韩国生活韩语一对一练习</title>
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
     body {
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: linear-gradient(135deg, #e0f2fe, #eef2ff);
-      min-height: 100vh;
+      background: #f3f4f6;
       display: flex;
       justify-content: center;
-      padding: 16px;
-      color: #111827;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
     }
+
     .app {
       width: 100%;
-      max-width: 1100px;
-      background: #ffffffee;
-      border-radius: 18px;
-      box-shadow: 0 20px 40px rgba(15, 23, 42, 0.18);
+      max-width: 900px;
+      background: #ffffff;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.08);
       display: flex;
       flex-direction: column;
       overflow: hidden;
     }
-    header {
-      padding: 14px 18px;
-      border-bottom: 1px solid #e5e7eb;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: rgba(255,255,255,0.9);
+
+    .header {
+      padding: 16px 20px;
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
+      color: #ffffff;
     }
-    .title-box h1 {
+
+    .header h1 {
       font-size: 20px;
-      font-weight: 800;
-    }
-    .title-box p {
-      font-size: 12px;
-      color: #6b7280;
-      margin-top: 2px;
-    }
-    .badge {
-      font-size: 11px;
-      padding: 4px 10px;
-      border-radius: 999px;
-      background: #eef2ff;
-      color: #4f46e5;
-      border: 1px solid #c7d2fe;
-    }
-    .main {
-      display: grid;
-      grid-template-columns: 260px 1fr;
-      min-height: 520px;
-    }
-    .left {
-      border-right: 1px solid #e5e7eb;
-      background: #f9fafb;
-      padding: 12px;
-    }
-    .left h2 {
-      font-size: 14px;
-      font-weight: 700;
       margin-bottom: 6px;
     }
-    .left p.desc {
-      font-size: 12px;
-      color: #6b7280;
-      margin-bottom: 10px;
+
+    .header p {
+      font-size: 13px;
+      opacity: 0.9;
       line-height: 1.4;
     }
-    .scene-list {
-      max-height: 430px;
-      overflow-y: auto;
+
+    .controls {
       display: flex;
-      flex-direction: column;
-      gap: 6px;
-      padding-right: 4px;
-    }
-    .scene-btn {
-      display: flex;
-      align-items: flex-start;
-      gap: 8px;
-      width: 100%;
-      padding: 7px 9px;
-      border-radius: 10px;
-      border: 1px solid transparent;
-      background: #ffffff;
-      cursor: pointer;
-      text-align: left;
-      transition: all 0.15s ease;
-      font-size: 12px;
-    }
-    .scene-btn:hover {
-      background: #eef2ff;
-      border-color: #c7d2fe;
-    }
-    .scene-btn.active {
-      background: #e0e7ff;
-      border-color: #4f46e5;
-      box-shadow: 0 0 0 1px rgba(79, 70, 229, 0.25);
-    }
-    .scene-icon {
-      font-size: 18px;
-      margin-top: 1px;
-    }
-    .scene-main {
-      font-weight: 700;
-      color: #111827;
-    }
-    .scene-sub {
-      font-size: 11px;
-      color: #6b7280;
-      margin-top: 2px;
+      gap: 10px;
+      align-items: center;
+      padding: 10px 16px;
+      border-bottom: 1px solid #e5e7eb;
+      background: #f9fafb;
+      flex-wrap: wrap;
     }
 
-    .right {
-      display: flex;
-      flex-direction: column;
+    .controls label {
+      font-size: 13px;
+      color: #374151;
+    }
+
+    .controls select {
+      padding: 6px 8px;
+      border-radius: 8px;
+      border: 1px solid #d1d5db;
+      font-size: 13px;
+    }
+
+    .hint {
+      padding: 8px 16px 10px;
+      font-size: 12px;
+      color: #4b5563;
+      background: #eff6ff;
+      border-top: 1px solid #dbeafe;
+      border-bottom: 1px solid #dbeafe;
+    }
+
+    .hint strong {
+      color: #1d4ed8;
+    }
+
+    .chat {
+      flex: 1;
+      padding: 16px;
+      overflow-y: auto;
       background: #f3f4f6;
     }
-    .chat-header {
-      padding: 10px 14px;
-      border-bottom: 1px solid #e5e7eb;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: #ffffffcc;
-    }
-    .scene-info-title {
+
+    .message {
+      margin-bottom: 12px;
+      max-width: 85%;
+      padding: 10px 12px;
+      border-radius: 12px;
       font-size: 14px;
-      font-weight: 700;
-    }
-    .scene-info-sub {
-      font-size: 11px;
-      color: #6b7280;
-      margin-top: 2px;
-    }
-    .btn-small {
-      font-size: 11px;
-      padding: 5px 10px;
-      border-radius: 999px;
-      border: 1px solid #c7d2fe;
-      background: #eef2ff;
-      color: #4f46e5;
-      cursor: pointer;
-    }
-    .btn-small:hover {
-      background: #e0e7ff;
+      line-height: 1.5;
+      white-space: pre-wrap;
+      word-break: break-word;
     }
 
-    .chat-body {
-      flex: 1;
-      padding: 10px 14px;
-      overflow-y: auto;
-    }
-    .msg-row {
-      display: flex;
-      margin-bottom: 8px;
-    }
-    .msg-row.user {
-      justify-content: flex-end;
-    }
-    .msg-bubble {
-      max-width: 78%;
-      padding: 8px 10px;
-      border-radius: 14px;
-      font-size: 13px;
-      line-height: 1.4;
-      white-space: pre-wrap;
-    }
-    .msg-bubble.user {
-      background: #4f46e5;
-      color: #f9fafb;
+    .message.user {
+      margin-left: auto;
+      background: #2563eb;
+      color: #ffffff;
       border-bottom-right-radius: 4px;
     }
-    .msg-bubble.bot {
+
+    .message.bot {
+      margin-right: auto;
       background: #ffffff;
       border: 1px solid #e5e7eb;
-      color: #111827;
       border-bottom-left-radius: 4px;
     }
-    .msg-meta {
-      font-size: 10px;
-      color: #9ca3af;
-      margin-top: 1px;
-    }
-    .typing {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      font-size: 11px;
-      color: #6b7280;
-    }
-    .dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 999px;
-      background: #4f46e5;
-      animation: bounce 1s infinite;
-    }
-    .dot:nth-child(2) { animation-delay: 0.15s; }
-    .dot:nth-child(3) { animation-delay: 0.3s; }
 
-    .chat-input {
-      padding: 10px 14px;
+    .message .role {
+      font-size: 11px;
+      font-weight: 600;
+      margin-bottom: 4px;
+      opacity: 0.7;
+    }
+
+    .footer {
+      display: flex;
+      padding: 10px;
       border-top: 1px solid #e5e7eb;
       background: #ffffff;
-      display: flex;
       gap: 8px;
     }
-    .chat-input input {
+
+    .footer input {
       flex: 1;
-      font-size: 13px;
-      padding: 7px 10px;
+      padding: 10px 12px;
       border-radius: 999px;
       border: 1px solid #d1d5db;
+      font-size: 14px;
       outline: none;
     }
-    .chat-input input:focus {
-      border-color: #4f46e5;
-      box-shadow: 0 0 0 1px rgba(79, 70, 229, 0.25);
+
+    .footer input:focus {
+      border-color: #2563eb;
+      box-shadow: 0 0 0 1px rgba(37,99,235,0.2);
     }
-    .send-btn {
-      padding: 7px 14px;
+
+    .footer button {
+      padding: 0 16px;
       border-radius: 999px;
       border: none;
-      font-size: 13px;
+      font-size: 14px;
       font-weight: 600;
-      background: #4f46e5;
-      color: white;
       cursor: pointer;
+      background: #2563eb;
+      color: #ffffff;
+      white-space: nowrap;
     }
-    .send-btn:disabled {
-      background: #9ca3af;
+
+    .footer button:disabled {
+      opacity: 0.5;
       cursor: default;
     }
 
-    footer {
-      font-size: 10px;
-      color: #9ca3af;
-      text-align: right;
-      padding: 4px 10px 8px;
-      background: #ffffffdd;
-      border-top: 1px solid #e5e7eb;
+    .small-tip {
+      font-size: 11px;
+      color: #6b7280;
+      padding: 0 16px 10px;
+      background: #ffffff;
+      border-top: 1px solid #f3f4f6;
     }
 
-    @media (max-width: 880px) {
-      .main {
-        grid-template-columns: 1fr;
+    @media (max-width: 600px) {
+      .header h1 {
+        font-size: 18px;
       }
-      .left {
-        border-right: none;
-        border-bottom: 1px solid #e5e7eb;
+      .controls {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .controls select {
+        width: 100%;
+      }
+      .footer {
+        flex-direction: column;
+      }
+      .footer button {
+        width: 100%;
+        padding: 8px;
       }
     }
   </style>
 </head>
 <body>
   <div class="app">
-    <header>
-      <div class="title-box">
-        <h1>AI 韩语对话教练 · 留学生版</h1>
-        <p>模拟韩国生活场景（银行 / 房东 / 课堂等），帮助中国留学生练习韩语对话</p>
-      </div>
-      <div class="badge">期末作业 · 웹 애플리케이션</div>
-    </header>
-
-    <div class="main">
-      <section class="left">
-        <h2>① 选择练习场景</h2>
-        <p class="desc">
-          选择你想练习的生活场景，然后用韩语输入你想说的话。
-          系统会给出简单纠错建议 + 韩语回复 + 中文解释。
-        </p>
-        <div class="scene-list" id="sceneList"></div>
-      </section>
-
-      <section class="right">
-        <div class="chat-header">
-          <div>
-            <div class="scene-info-title" id="sceneTitle">请先在左侧选择一个场景</div>
-            <div class="scene-info-sub" id="sceneSub">
-              例如：银行、邮局、房东、教授、朋友、机场、出入境中心、公交车、大巴站、饭店、紧急情况、课堂等。
-            </div>
-          </div>
-          <button class="btn-small" id="resetBtn">重新开始当前场景</button>
-        </div>
-
-        <div class="chat-body" id="chatBody">
-          <!-- 聊天内容 -->
-        </div>
-
-        <div class="chat-input">
-          <input
-            type="text"
-            id="userInput"
-            placeholder="用韩语输入你想说的话，例如：계좌를 만들고 싶어요."
-          />
-          <button class="send-btn" id="sendBtn">发送</button>
-        </div>
-      </section>
+    <div class="header">
+      <h1>韩国生活韩语一对一练习</h1>
+      <p>为刚来韩国的中国留学生设计的模拟对话网站。选择一个场景，用韩语和“职员/对方”一对一聊天吧！</p>
     </div>
 
-    <footer>
-      Made for 한국 유학생 · 한국어 회화 연습 | 기말고사 대체과제
-    </footer>
+    <div class="controls">
+      <label>
+        场景选择：
+        <select id="scenarioSelect">
+          <option value="bank">🏦 银行（开户、换钱等）</option>
+          <option value="post">📮 邮局（寄快递、取快递）</option>
+          <option value="immigration">🛂 出入境/外国人登录</option>
+          <option value="airport">✈️ 机场（办理登机、问路）</option>
+          <option value="bus">🚌 大巴/公交（买票、问路）</option>
+          <option value="restaurant">🍽️ 饭店点餐</option>
+          <option value="emergency">🚑 紧急情况/医院</option>
+          <option value="classroom">🏫 课堂（问教授、同学）</option>
+          <option value="landlord">🏠 房东/租房</option>
+          <option value="friend">🧑‍🤝‍🧑 朋友聊天</option>
+          <option value="professor">👨‍🏫 教授/助教</option>
+        </select>
+      </label>
+    </div>
+
+    <div id="hintBox" class="hint">
+      <strong>当前场景：银行 🏦</strong><br />
+      请用简单的韩语先开口，比如：<br />
+      <code>계좌를 만들고 싶어요.</code><br />
+      我会扮演银行职员，用韩语回答你，如果表达不自然，会给你简单提示。
+    </div>
+
+    <div id="chatWindow" class="chat"></div>
+
+    <div class="footer">
+      <input
+        type="text"
+        id="userInput"
+        placeholder="请用韩语输入你想说的话（按 Enter 或点击发送）"
+      />
+      <button id="sendBtn">发送</button>
+    </div>
+    <div class="small-tip">
+      小提示：这个网站是 <strong>前端模拟对话</strong>，不是联网的 ChatGPT。主要用来练习常见情景韩语口语和语感。
+    </div>
   </div>
 
   <script>
-    // 场景定义
-    const SCENARIOS = [
-      {
-        id: "bank",
-        icon: "🏦",
-        title: "银行",
-        subtitle: "开户、汇款、换钱、询问手续费",
-        role: "은행 직원 (银行职员)",
-        greeting: "안녕하세요, 은행입니다. 오늘은 어떤 업무 보러 오셨어요?",
-        greetingCn: "您好，这里是银行。请问您今天想办理什么业务？"
+    const chatWindow = document.getElementById("chatWindow");
+    const userInput = document.getElementById("userInput");
+    const sendBtn = document.getElementById("sendBtn");
+    const scenarioSelect = document.getElementById("scenarioSelect");
+    const hintBox = document.getElementById("hintBox");
+
+    // 每个场景的提示文字
+    const scenarioHints = {
+      bank: {
+        title: "银行 🏦",
+        hint: '请用简单的韩语开口，比如：\n"계좌를 만들고 싶어요."\n我会扮演银行职员，用韩语回答你。'
       },
-      {
-        id: "post",
-        icon: "📮",
-        title: "邮局",
-        subtitle: "寄包裹、买邮票、快递、挂号",
-        role: "우체국 직원 (邮局职员)",
-        greeting: "안녕하세요, 우체국입니다. 무엇을 보내시겠어요?",
-        greetingCn: "您好，这里是邮局。请问您要寄什么？"
+      post: {
+        title: "邮局 📮",
+        hint: '可以尝试说：\n"소포를 보내고 싶어요." 或 "택배를 찾으러 왔어요."'
       },
-      {
-        id: "immigration",
-        icon: "🛂",
-        title: "出入境中心",
-        subtitle: "签证延期、外国人登录证、地址变更",
-        role: "출입국 직원 (出入境工作人员)",
-        greeting: "안녕하세요, 출입국·외국인청입니다. 어떤 업무로 오셨어요?",
-        greetingCn: "您好，这里是出入境·外国人厅。请问您来办理什么业务？"
+      immigration: {
+        title: "出入境/外国人登录 🛂",
+        hint: '可以尝试说：\n"외국인등록을 하고 싶어요." 或 "체류기간 연장하러 왔어요."'
       },
-      {
-        id: "airport",
-        icon: "✈️",
-        title: "机场",
-        subtitle: "托运行李、登机、问登机口",
-        role: "공항 직원 (机场工作人员)",
-        greeting: "안녕하세요, 공항 안내입니다. 어디로 가시는 항공편이세요?",
-        greetingCn: "您好，这里是机场服务台。请问您要乘坐去哪里的航班？"
+      airport: {
+        title: "机场 ✈️",
+        hint: '可以尝试说：\n"체크인하려고 왔어요." 或 "게이트가 어디예요?"'
       },
-      {
-        id: "express",
-        icon: "🚌",
-        title: "大巴客运站",
-        subtitle: "买票、确认时间、上车地点",
-        role: "터미널 직원 (客运站工作人员)",
-        greeting: "안녕하세요, 고속버스 터미널입니다. 어디까지 가는 표를 찾으세요?",
-        greetingCn: "您好，这里是高速大巴客运站。您要买去哪里的车票？"
+      bus: {
+        title: "大巴/公交 🚌",
+        hint: '可以尝试说：\n"대전 가는 버스표 한 장 주세요." 或 "○○까지 어떻게 가요?"'
       },
-      {
-        id: "bus",
-        icon: "🚍",
-        title: "公交车",
-        subtitle: "问路、确认到站、换乘",
-        role: "버스 기사님 (公交司机)",
-        greeting: "어디까지 가세요?",
-        greetingCn: "您要坐到哪里？"
+      restaurant: {
+        title: "饭店点餐 🍽️",
+        hint: '可以尝试说：\n"메뉴 추천해 주세요." 或 "이거 하나랑 콜라 하나 주세요."'
       },
-      {
-        id: "restaurant",
-        icon: "🍽️",
-        title: "饭店 / 餐厅",
-        subtitle: "点餐、要不辣、打包、结账",
-        role: "식당 직원 (餐厅服务员)",
-        greeting: "어서오세요! 몇 분이세요?",
-        greetingCn: "欢迎光临！请问几位？"
+      emergency: {
+        title: "紧急情况/医院 🚑",
+        hint: '可以尝试说：\n"배가 많이 아파요." 或 "응급실이 어디예요?"'
       },
-      {
-        id: "emergency",
-        icon: "🚑",
-        title: "紧急情况",
-        subtitle: "打119、急诊室、说明症状",
-        role: "응급실 간호사 (急诊室护士)",
-        greeting: "어디가 어떻게 불편하신가요?",
-        greetingCn: "哪里不舒服？请说一下您的症状。"
+      classroom: {
+        title: "课堂 🏫",
+        hint: '可以尝试说：\n"교수님, 질문이 있어요." 或 "다시 한 번 설명해 주실 수 있어요?"'
       },
-      {
-        id: "classroom",
-        icon: "🏫",
-        title: "课堂",
-        subtitle: "跟教授对话、请假、问作业",
-        role: "교수님 (教授)",
-        greeting: "안녕하세요. 수업에 대해 궁금한 점이 있나요?",
-        greetingCn: "你好。关于课程有什么想问的吗？"
+      landlord: {
+        title: "房东/租房 🏠",
+        hint: '可以尝试说：\n"원룸을 구하고 있어요." 或 "보증금이 얼마예요?"'
       },
-      {
-        id: "landlord",
-        icon: "🏠",
-        title: "房东",
-        subtitle: "看房、押金、月租、报修",
-        role: "집주인 (房东)",
-        greeting: "안녕하세요. 방 보러 오셨어요?",
-        greetingCn: "你好，是来看房的吗？"
+      friend: {
+        title: "朋友聊天 🧑‍🤝‍🧑",
+        hint: '可以尝试说：\n"요즘 어떻게 지내?" 或 "같이 밥 먹을래?"'
       },
-      {
-        id: "professor",
-        icon: "👨‍🏫",
-        title: "教授",
-        subtitle: "论文、作业、推荐信",
-        role: "지도 교수님 (指导教授)",
-        greeting: "네, 말씀하세요. 무엇이 궁금한가요?",
-        greetingCn: "好的，你说吧，有什么问题？"
-      },
-      {
-        id: "friend",
-        icon: "👥",
-        title: "韩国朋友",
-        subtitle: "日常聊天、约饭、出去玩",
-        role: "한국 친구 (韩国朋友)",
-        greeting: "안녕! 요즘 어떻게 지내?",
-        greetingCn: "嗨！你最近过得怎么样？"
+      professor: {
+        title: "教授/助教 👨‍🏫",
+        hint: '可以尝试说：\n"교수님, 상담 가능하실까요?" 或 "과제를 좀 늦게 내도 될까요?"'
       }
-    ];
-
-    let currentScenario = null;
-    let isThinking = false;
-
-    const sceneListEl = document.getElementById("sceneList");
-    const chatBodyEl = document.getElementById("chatBody");
-    const sceneTitleEl = document.getElementById("sceneTitle");
-    const sceneSubEl = document.getElementById("sceneSub");
-    const userInputEl = document.getElementById("userInput");
-    const sendBtnEl = document.getElementById("sendBtn");
-    const resetBtnEl = document.getElementById("resetBtn");
-
-    // 渲染场景列表
-    function renderSceneList() {
-      sceneListEl.innerHTML = "";
-      SCENARIOS.forEach(scene => {
-        const btn = document.createElement("button");
-        btn.className = "scene-btn";
-        btn.dataset.id = scene.id;
-        btn.innerHTML = `
-          <div class="scene-icon">${scene.icon}</div>
-          <div>
-            <div class="scene-main">${scene.title}</div>
-            <div class="scene-sub">${scene.subtitle}</div>
-          </div>
-        `;
-        btn.addEventListener("click", () => selectScenario(scene.id));
-        sceneListEl.appendChild(btn);
-      });
-    }
-
-    function updateSceneActive() {
-      const buttons = sceneListEl.querySelectorAll(".scene-btn");
-      buttons.forEach(btn => {
-        if (currentScenario && btn.dataset.id === currentScenario.id) {
-          btn.classList.add("active");
-        } else {
-          btn.classList.remove("active");
-        }
-      });
-    }
-
-    function clearChat() {
-      chatBodyEl.innerHTML = "";
-    }
-
-    function addMessage(role, text, meta) {
-      const row = document.createElement("div");
-      row.className = "msg-row " + (role === "user" ? "user" : "bot");
-
-      const bubble = document.createElement("div");
-      bubble.className = "msg-bubble " + (role === "user" ? "user" : "bot");
-      bubble.textContent = text;
-      row.appendChild(bubble);
-
-      chatBodyEl.appendChild(row);
-
-      if (meta) {
-        const metaEl = document.createElement("div");
-        metaEl.className = "msg-meta";
-        metaEl.textContent = meta;
-        chatBodyEl.appendChild(metaEl);
-      }
-
-      chatBodyEl.scrollTop = chatBodyEl.scrollHeight;
-    }
-
-    function addTypingIndicator() {
-      const row = document.createElement("div");
-      row.className = "msg-row bot";
-      row.id = "typingRow";
-
-      const bubble = document.createElement("div");
-      bubble.className = "msg-bubble bot";
-
-      const container = document.createElement("div");
-      container.className = "typing";
-      const d1 = document.createElement("div");
-      d1.className = "dot";
-      const d2 = document.createElement("div");
-      d2.className = "dot";
-      const d3 = document.createElement("div");
-      d3.className = "dot";
-      container.appendChild(d1);
-      container.appendChild(d2);
-      container.appendChild(d3);
-
-      const text = document.createElement("span");
-      text.textContent = " 생각 중… / 正在思考回复…";
-      container.appendChild(text);
-
-      bubble.appendChild(container);
-      row.appendChild(bubble);
-      chatBodyEl.appendChild(row);
-      chatBodyEl.scrollTop = chatBodyEl.scrollHeight;
-    }
-
-    function removeTypingIndicator() {
-      const row = document.getElementById("typingRow");
-      if (row) {
-        row.remove();
-      }
-    }
-
-    function selectScenario(id) {
-      currentScenario = SCENARIOS.find(s => s.id === id);
-      updateSceneActive();
-      clearChat();
-
-      if (currentScenario) {
-        sceneTitleEl.textContent = `场景：${currentScenario.title}`;
-        sceneSubEl.textContent = `${currentScenario.role} · ${currentScenario.subtitle}`;
-        addMessage(
-          "bot",
-          currentScenario.greeting + "\n\n【翻译】\n" + currentScenario.greetingCn,
-          currentScenario.role
-        );
-      } else {
-        sceneTitleEl.textContent = "请先在左侧选择一个场景";
-        sceneSubEl.textContent = "例如银行、邮局、机场、房东、朋友、课堂等。";
-      }
-    }
-
-    function hasHangul(text) {
-      return /[ㄱ-ㅎ가-힣]/.test(text);
-    }
-
-    function isPolite(text) {
-      const trimmed = text.trim();
-      const politeEndings = ["요", "니다", "세요", "십시오", "에요", "예요"];
-      return politeEndings.some(end => trimmed.endsWith(end));
-    }
-
-    function buildCorrection(userText) {
-      const hasKo = hasHangul(userText);
-      if (!hasKo) {
-        return {
-          error: userText,
-          suggest: "가능하면 한국어로 입력해 보세요. (例如：계좌를 만들고 싶어요.)",
-          explain: "为了练习韩语，这里建议尽量使用韩文输入。"
-        };
-      }
-
-      // 朋友场景可以用半语，不强制敬语
-      if (currentScenario && currentScenario.id === "friend") {
-        return null;
-      }
-
-      const polite = isPolite(userText);
-      if (!polite) {
-        return {
-          error: userText,
-          suggest: userText + "요",
-          explain: "在正式场合（银行、出入境、教授等），建议使用敬语句尾，例如以“요”或“입니다”结尾。"
-        };
-      }
-
-      return null;
-    }
-
-    function buildScenarioReply(userText) {
-      if (!currentScenario) return {
-        ko: "장면을 먼저 선택해 주세요.",
-        cn: "请先选择一个场景。"
-      };
-
-      const role = currentScenario.role;
-      const base = currentScenario.id;
-
-      switch (base) {
-        case "bank":
-          return {
-            ko: `${role}입니다. 방금 이렇게 말씀하셨어요: "${userText}"
-계좌 개설, 송금, 환전, 수수료 확인 같은 표현을 많이 연습해 보시면 좋아요.`,
-            cn: `这里是银行职员。你刚才说：“${userText}”。可以多练习【开户、汇款、换钱、问手续费】这些表达。`
-          };
-        case "post":
-          return {
-            ko: `${role}입니다. "${userText}"라고 하셨네요.
-보내는 나라, 등기/일반, 무게와 요금에 대한 말을 함께 연습해 봅시다.`,
-            cn: `这里是邮局职员。你刚才说：“${userText}”。可以一起练习【寄往哪个国家、挂号/普通、重量和费用】相关句子。`
-          };
-        case "immigration":
-          return {
-            ko: `${role}입니다. "${userText}"라고 하셨군요.
-비자 연장, 체류 자격, 주소 변경 등을 한국어로 설명해 보는 연습을 해 보세요.`,
-            cn: `这里是出入境工作人员。你刚才说：“${userText}”。可以练习用韩语说明【签证延期、居留资格、地址变更】等情况。`
-          };
-        case "airport":
-          return {
-            ko: `${role}입니다. "${userText}" 잘 말씀하셨어요.
-출국장 위치, 탑승구, 수하물 관련 표현을 더 말해 보시면 좋습니다.`,
-            cn: `这里是机场工作人员。你刚才说：“${userText}”，说得不错。可以多练习【出境大厅、登机口、行李托运】相关表达。`
-          };
-        case "express":
-          return {
-            ko: `${role}입니다. 방금 "${userText}"라고 하셨네요.
-출발 시간, 도착 시간, 탑승 장소를 묻는 표현을 연습해 보세요.`,
-            cn: `这里是客运站工作人员。你刚刚说：“${userText}”。可以练习【发车时间、到达时间、上车地点】的句子。`
-          };
-        case "bus":
-          return {
-            ko: `${role}입니다. "${userText}" 잘 들었습니다.
-어디까지 가는지, 몇 정거장인지, 환승이 필요한지 묻는 표현을 연습해 보시면 좋아요.`,
-            cn: `这里是公交司机。听到你说：“${userText}”。可以练习【到哪里下车、几站、要不要换乘】这些问路表达。`
-          };
-        case "restaurant":
-          return {
-            ko: `${role}입니다. "${userText}"라고 주문해 봤네요.
-인원 수, 맵기 조절, 반찬 추가, 계산하기 같은 말을 더 연습해 보세요.`,
-            cn: `这里是餐厅服务员。你刚才这样点餐：“${userText}”。可以再多练习【人数、要不要辣、加小菜、结账】这些句子。`
-          };
-        case "emergency":
-          return {
-            ko: `${role}입니다. "${userText}"라고 하셨군요.
-언제부터 아팠는지, 어디가 얼마나 아픈지 구체적으로 설명하는 연습을 해 보세요.`,
-            cn: `这里是急诊室护士。你刚才说：“${userText}”。可以练习更具体地说明【从什么时候开始痛、哪里痛、痛得多厉害】。`
-          };
-        case "classroom":
-          return {
-            ko: `${role}입니다. "${userText}" 잘 질문하셨어요.
-과제 마감일, 시험 범위, 발표 순서 등을 묻는 표현을 계속 연습해 보세요.`,
-            cn: `这里是教授。你刚才问：“${userText}”，问得很好。可以继续练习【作业截止时间、考试范围、发表顺序】这些提问。`
-          };
-        case "landlord":
-          return {
-            ko: `${role}입니다. 방금 "${userText}"라고 말씀하셨네요.
-보증금, 월세, 관리비, 계약 기간, 고장 수리 요청 표현을 자주 사용해 보세요.`,
-            cn: `这里是房东。你刚才说：“${userText}”。可以多练习【押金、月租、管理费、合同期限、报修】的表达。`
-          };
-        case "professor":
-          return {
-            ko: `${role}입니다. "${userText}"라고 하셨군요.
-논문 주제, 참고 문헌, 연구 방법을 한국어로 설명하는 연습을 계속해 보세요.`,
-            cn: `这里是指导教授。你刚才说：“${userText}”。可以练习用韩语说明【论文题目、参考文献、研究方法】。`
-          };
-        case "friend":
-          return {
-            ko: `${role}입니다. "${userText}" 잘 말했어요!
-취미, 음식, 여행, 한국 생활에 대해 편하게 이야기하는 연습을 많이 해 보세요.`,
-            cn: `这里是韩国朋友。你刚才说：“${userText}”，说得很好！可以多练习聊【兴趣、吃什么、旅行、在韩国生活】这些轻松话题。`
-          };
-        default:
-          return {
-            ko: `"${userText}"라고 잘 말씀하셨어요. 이 장면에서 자주 쓰는 표현을 여러 가지 시도해 보세요.`,
-            cn: `你刚才说：“${userText}”，说得不错。可以多尝试这个场景里常用的其他句子。`
-          };
-      }
-    }
-
-    function handleSend() {
-      if (isThinking) return;
-      const text = userInputEl.value.trim();
-      if (!text) return;
-      if (!currentScenario) {
-        alert("请先在左侧选择一个练习场景。");
-        return;
-      }
-
-      addMessage("user", text, "学生 / 学습자");
-      userInputEl.value = "";
-      userInputEl.focus();
-
-      const correction = buildCorrection(text);
-      const replyInfo = buildScenarioReply(text);
-
-      isThinking = true;
-      addTypingIndicator();
-
-      setTimeout(() => {
-        removeTypingIndicator();
-        let botText = "";
-
-        if (correction) {
-          botText += "【纠错】\n";
-          botText += "❌ 原句: " + correction.error + "\n";
-          botText += "✅ 建议: " + correction.suggest + "\n";
-          botText += "💡 说明: " + correction.explain + "\n\n";
-        }
-
-        botText += "【回应】\n" + replyInfo.ko + "\n\n【翻译】\n" + replyInfo.cn;
-
-        addMessage("bot", botText, currentScenario.role + " · AI 韩语教练");
-        isThinking = false;
-      }, 700);
-    }
-
-    function resetCurrentScenario() {
-      if (!currentScenario) {
-        clearChat();
-        sceneTitleEl.textContent = "请先在左侧选择一个场景";
-        sceneSubEl.textContent = "例如银行、邮局、机场、房东、朋友、课堂等。";
-        return;
-      }
-      selectScenario(currentScenario.id);
-    }
-
-    // 事件绑定
-    sendBtnEl.addEventListener("click", handleSend);
-    userInputEl.addEventListener("keydown", (e) => {
-      if (e.key === "Enter") {
-        handleSend();
-      }
-    });
-    resetBtnEl.addEventListener("click", resetCurrentScenario);
-
-    // 初始化
-    renderSceneList();
-  </script>
-</body>
-</html>
